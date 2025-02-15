@@ -1,12 +1,18 @@
-from flask import Flask, request, jsonify
-import easyocr
+from flask import Flask, request, jsonify, render_template
 import os
 import uuid
+import tempfile
+import easyocr
 
 app = Flask(__name__)
 
 # Inicializar o EasyOCR
 reader = easyocr.Reader(['pt'])
+
+# Rota para a página inicial
+@app.route('/')
+def index():
+    return render_template('index.html')  # Renderiza o HTML
 
 # Rota para processar o upload da imagem
 @app.route('/ocr', methods=['POST'])
@@ -20,7 +26,7 @@ def ocr():
 
     # Salvar o arquivo temporariamente
     filename = str(uuid.uuid4()) + os.path.splitext(file.filename)[1]
-    filepath = os.path.join('/tmp', filename)
+    filepath = os.path.join(tempfile.gettempdir(), filename)
     file.save(filepath)
 
     # Realizar o OCR
@@ -34,11 +40,6 @@ def ocr():
         # Remover o arquivo temporário
         if os.path.exists(filepath):
             os.remove(filepath)
-
-# Rota padrão para verificar se o servidor está funcionando
-@app.route('/')
-def index():
-    return 'Servidor Flask está funcionando!'
 
 if __name__ == '__main__':
     app.run(debug=True)
