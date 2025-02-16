@@ -56,3 +56,4 @@ $RECYCLE.BIN/
 # Editor de código
 .vscode/
 .idea/
+.vercel

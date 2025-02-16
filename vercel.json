@@ -3,24 +3,13 @@
   "builds": [
     {
       "src": "Dockerfile",
-      "use": "@vercel/static-build",
-      "config": {
-        "distDir": "api"
-      }
+      "use": "@vercel/docker"
     }
   ],
   "routes": [
     {
-      "src": "/",
+      "src": "/(.*)",
       "dest": "api/app.py"
-    },
-    {
-      "src": "/ocr",
-      "dest": "api/app.py"
-    },
-    {
-      "src": "/static/(.*)",
-      "dest": "api/static/$1"
     }
   ]
 }
